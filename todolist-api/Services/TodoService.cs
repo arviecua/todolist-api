@@ -44,15 +44,24 @@ namespace todolist_api.Services
         {
             try
             {
-                mainDbContext.Todos.Add(new Entities.Todos {Message = todo.Message, IsCompleted = todo.IsCompleted});
+                var todoEntity = new Entities.Todos
+                {
+                    Message = todo.Message,
+                    IsCompleted = todo.IsCompleted
+                };
+                mainDbContext.Todos.Add(todoEntity);
                 mainDbContext.SaveChanges();
-
 
 
                 return new Response
                 {
                     Status = "success",
-                    Payload = todo
+                    Payload = new Todo
+                    {
+                        Id = todoEntity.Id,
+                        Message = todoEntity.Message,
+                        IsCompleted = todoEntity.IsCompleted
+                    }
                 };
 
             }
